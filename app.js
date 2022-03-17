@@ -1,11 +1,10 @@
 const express = require("express");
 const app = express();
-const port = 3000;
+const port = 8080;
 
+//READ Request Handlers
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  res.send("Welcome to Irfan's AWEsome REST api");
 });
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-});
+app.listen(port, () => console.log(`Listening on port ${port}..`));
