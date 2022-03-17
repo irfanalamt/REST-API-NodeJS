@@ -19,15 +19,45 @@ const users = [
     name: "Dwayne Johnson",
     age: "32",
   },
+  {
+    id: 3,
+    name: "Rey M",
+    age: "36",
+  },
+  {
+    id: 4,
+    name: "Ricky Martin",
+    age: "25",
+  },
 ];
 
 //READ Request Handlers
 app.get("/", (req, res) => {
   res.send("Welcome to Irfan's AWEsome REST api");
+  console.log("/ endpoint hit");
 });
 app.get("/users", (req, res) => {
   // Retrieves all users
   res.json({ users });
+  console.log("/users endpoint hit");
+});
+app.get("/users/:uid", (req, res) => {
+  const id = parseInt(req.params.uid);
+  console.log(`URL parameter = ${id}`);
+  try {
+    let user = users.find((user) => user.id === id);
+    if (!user) {
+      res.json({
+        message: "User not found",
+      });
+    }
+
+    res.json({ user });
+  } catch (error) {
+    res.json({
+      message: "Failed to retrieve user",
+    });
+  }
 });
 
 app.post("/create", (req, res) => {
