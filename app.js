@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const port = 8080;
+const fetch = require("node-fetch");
 
 // parse JSON
 app.use(express.json());
@@ -32,8 +33,13 @@ const users = [
 ];
 
 //READ Request Handlers
-app.get("/", (req, res) => {
-  res.send("Welcome to Irfan's AWEsome REST api");
+app.get("/", async (req, res) => {
+  const resp = await fetch("https://complimentr.com/api");
+  const temp1 = await resp.json();
+  console.log(temp1);
+  console.log(temp1.compliment);
+
+  res.send("Welcome to Irfan's AWEsome REST api.\n" + temp1.compliment);
   console.log("/ endpoint hit");
 });
 app.get("/users", (req, res) => {
