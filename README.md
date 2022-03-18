@@ -2,7 +2,7 @@
 
 ## About the app
 
-I'm just brushing my dev skills. The front-end is rendered using Pug as a templating engine and Node/Express back-end.
+I'm just brushing my dev skills. The front-end is rendered using Pug as a templating engine and the back-end is Node/Express.
 
 ## How to run the API
 
