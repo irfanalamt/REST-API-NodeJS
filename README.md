@@ -8,5 +8,5 @@ I'm just brushing my dev skills. The front-end is rendered using Pug as a templa
 2. Run `npm install` to install all dependencies.
 3. Run `npm run start` to start the app.
 
-##Enjoy!
+## Enjoy!
 
