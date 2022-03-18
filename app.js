@@ -2,13 +2,8 @@ const express = require("express");
 const app = express();
 const port = 8080;
 const fetch = require("node-fetch");
+const path = require("path");
 
-// parse JSON
-app.use(express.json());
-// parse URL encoded data
-app.use(express.urlencoded({ extended: true }));
-
-//sample data
 const users = [
   {
     id: 1,
@@ -32,20 +27,22 @@ const users = [
   },
 ];
 
+//Load view engine
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "pug");
+
 //READ Request Handlers
-app.get("/", async (req, res) => {
+app.get("/compliment", async (req, res) => {
   const resp = await fetch("https://complimentr.com/api");
   const temp1 = await resp.json();
-  console.log(temp1);
   console.log(temp1.compliment);
-
-  res.send("Welcome to Irfan's AWEsome REST api.\n" + temp1.compliment);
-  console.log("/ endpoint hit");
+  res.render("compliment", temp1);
+  console.log("/compliment endpoint hit");
 });
-app.get("/users", (req, res) => {
-  // Retrieves all users
-  res.json({ users });
-  console.log("/users endpoint hit");
+app.get("/", (req, res) => {
+  res.render("index");
+
+  console.log("/ endpoint hit");
 });
 app.get("/users/:uid", (req, res) => {
   const id = parseInt(req.params.uid);

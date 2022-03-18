@@ -11,7 +11,8 @@
   "dependencies": {
     "express": "^4.17.3",
     "mongodb": "^4.4.1",
-    "node-fetch": "2.0"
+    "node-fetch": "2.0",
+    "pug": "^3.0.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"
