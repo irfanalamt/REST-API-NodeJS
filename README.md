@@ -11,7 +11,7 @@ I'm just brushing my dev skills. The front-end is rendered using Pug(templating 
 2. In your terminal, navigate to the project root directory.
    `cd REST_API_NodeJS `
 3. Run `npm install` to install all dependencies.
-4. Run `npm start` to start the app.
+4. Run `node app.js` to start the app.
 5. Open your local browser and navigate to `http://localhost:8080`
 
 ## Enjoy!
