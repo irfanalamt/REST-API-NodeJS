@@ -3,6 +3,11 @@ const app = express();
 const port = 8080;
 const fetch = require("node-fetch");
 const path = require("path");
+const fs = require("fs");
+const { stringify } = require("querystring");
+
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
 const users = [
   {
@@ -65,6 +70,24 @@ app.get("/users/:uid", (req, res) => {
 
 app.post("/create", (req, res) => {
   // Create a user
+
+  fs.readFile("sample-data.json", "utf8", function (err, data) {
+    if (err) console.log("Error while reading file", err);
+    else {
+      let tempData = JSON.parse(data);
+      console.log(typeof req.body);
+      tempData.push(req.body);
+      console.log(tempData);
+      fs.writeFile("sample-data.json", JSON.stringify(tempData), (err) => {
+        if (err) {
+          console.log("Error while writing file", err);
+          res.send("POST request ERROR");
+        }
+      });
+    }
+  });
+  console.log(req.body);
+  res.render("success", { msg: "POST request success. Item inserted." });
 });
 
 app.get("/user/:userID", (req, res) => {
