@@ -4,6 +4,16 @@
 
 I'm just brushing my dev skills. The front-end is rendered using Pug(templating engine) and Bootstrap(CSS framework).The back-end is Node/Express.
 
+## Routes
+
+| Route       | Method | Description                   |
+| ----------- | ------ | ----------------------------- |
+| /compliment | GET    | Get a random compliment       |
+| /users      | GET    | Get all users data            |
+| /users/id   | GET    | Get a single user data        |
+| /users      | POST   | Create a new user in database |
+| /users      | PUT    | Update a user record          |
+
 ## How to run the API
 
 1. Clone the repository.

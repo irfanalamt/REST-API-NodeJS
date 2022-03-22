@@ -9,29 +9,6 @@ const { stringify } = require("querystring");
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-const users = [
-  {
-    id: 1,
-    name: "John Cena",
-    age: "28",
-  },
-  {
-    id: 2,
-    name: "Dwayne Johnson",
-    age: "32",
-  },
-  {
-    id: 3,
-    name: "Rey M",
-    age: "36",
-  },
-  {
-    id: 4,
-    name: "Ricky Martin",
-    age: "25",
-  },
-];
-
 //Load view engine
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
@@ -49,28 +26,18 @@ app.get("/", (req, res) => {
 
   console.log("/ endpoint hit");
 });
-app.get("/users/:uid", (req, res) => {
-  const id = parseInt(req.params.uid);
-  console.log(`URL parameter = ${id}`);
-  try {
-    let user = users.find((user) => user.id === id);
-    if (!user) {
-      res.json({
-        message: "User not found",
-      });
-    }
 
-    res.json({ user });
-  } catch (error) {
-    res.json({
-      message: "Failed to retrieve user",
-    });
-  }
+app.get("/user", (req, res) => {
+  fs.readFile("sample-data.json", "utf8", function (err, data) {
+    if (err) console.log("Error while reading file", err);
+    else {
+      res.send(data);
+    }
+  });
 });
 
 app.post("/user", (req, res) => {
   // Create a user
-
   fs.readFile("sample-data.json", "utf8", function (err, data) {
     if (err) console.log("Error while reading file", err);
     else {
@@ -102,7 +69,7 @@ app.get("/user/:userID", (req, res) => {
 
       if (!findValue) res.send("ID match NOT found!");
       else {
-        res.send(JSON.stringify(findValue));
+        res.json(findValue);
       }
     }
   });
