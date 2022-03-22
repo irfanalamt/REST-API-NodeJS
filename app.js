@@ -68,7 +68,7 @@ app.get("/users/:uid", (req, res) => {
   }
 });
 
-app.post("/create", (req, res) => {
+app.post("/user", (req, res) => {
   // Create a user
 
   fs.readFile("sample-data.json", "utf8", function (err, data) {
@@ -92,6 +92,20 @@ app.post("/create", (req, res) => {
 
 app.get("/user/:userID", (req, res) => {
   // Returns a user by ID
+  fs.readFile("sample-data.json", "utf8", function (err, data) {
+    if (err) console.log("Error while reading file", err);
+    else {
+      let tempData = JSON.parse(data);
+      const findValue = tempData.find(
+        (element) => element.id == req.params.userID
+      );
+
+      if (!findValue) res.send("ID match NOT found!");
+      else {
+        res.send(JSON.stringify(findValue));
+      }
+    }
+  });
 });
 app.put("/user/:userID", (req, res) => {
   // Update a user by ID
