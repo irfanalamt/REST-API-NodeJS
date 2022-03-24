@@ -28,6 +28,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/user", (req, res) => {
+  //Get all users in the database
   fs.readFile("sample-data.json", "utf8", function (err, data) {
     if (err) console.log("Error while reading file", err);
     else {
@@ -37,7 +38,7 @@ app.get("/user", (req, res) => {
 });
 
 app.post("/user", (req, res) => {
-  // Create a user
+  // Create a user by sending a JSON object
   fs.readFile("sample-data.json", "utf8", function (err, data) {
     if (err) console.log("Error while reading file", err);
     else {
