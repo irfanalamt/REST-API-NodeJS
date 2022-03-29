@@ -14,9 +14,23 @@ app.use(express.json());
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 
-const logger = (req, res, next) => {
-  console.log("FLOW TEST");
-  return next();
+//Error handler middleware
+app.use((err, req, res, next) => {
+  console.log(`Error handler ${err}`);
+  res.status(500);
+  res.send("response from error handler");
+});
+
+const readFromFile = (req, res, next) => {
+  fs.readFile("sample-data.json", "utf8", (err, data) => {
+    if (err) {
+      console.log("Error while reading file", err);
+      return next(err);
+    } else {
+      res.locals = data;
+      return next();
+    }
+  });
 };
 
 //READ Request Handlers
@@ -33,17 +47,12 @@ app.get("/", (req, res) => {
   console.log("/ endpoint hit");
 });
 
-app.get("/user", logger, (req, res) => {
+app.get("/user", readFromFile, (req, res) => {
   //Get all users in the database
-  fs.readFile("sample-data.json", "utf8", function (err, data) {
-    if (err) console.log("Error while reading file", err);
-    else {
-      res.send(data);
-    }
-  });
+  res.send(res.locals);
 });
 
-app.post("/user", (req, res) => {
+app.post("/user", (req, res, next) => {
   // Create a user by sending a JSON object
   fs.readFile("sample-data.json", "utf8", function (err, data) {
     if (err) console.log("Error while reading file", err);
@@ -55,7 +64,7 @@ app.post("/user", (req, res) => {
       fs.writeFile("sample-data.json", JSON.stringify(tempData), (err) => {
         if (err) {
           console.log("Error while writing file", err);
-          res.send("POST request ERROR");
+          return next("POST request ERROR");
         }
       });
     }
@@ -64,22 +73,16 @@ app.post("/user", (req, res) => {
   res.render("success", { msg: "POST request success. Item inserted." });
 });
 
-app.get("/user/:userID", (req, res) => {
+app.get("/user/:userID", readFromFile, (req, res, next) => {
   // Returns a user by ID
-  fs.readFile("sample-data.json", "utf8", function (err, data) {
-    if (err) console.log("Error while reading file", err);
-    else {
-      let tempData = JSON.parse(data);
-      const findValue = tempData.find(
-        (element) => element.id == req.params.userID
-      );
 
-      if (!findValue) res.send("ID match NOT found!");
-      else {
-        res.json(findValue);
-      }
-    }
-  });
+  let tempData = JSON.parse(res.locals);
+  const findValue = tempData.find((element) => element.id == req.params.userID);
+
+  if (!findValue) return next("ID match NOT found!");
+  else {
+    res.json(findValue);
+  }
 });
 app.put("/user/:userID", (req, res) => {
   // Update a user by ID
