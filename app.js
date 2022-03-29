@@ -5,6 +5,7 @@ const fetch = require("node-fetch");
 const path = require("path");
 const fs = require("fs");
 const { stringify } = require("querystring");
+const { nextTick } = require("process");
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -12,6 +13,11 @@ app.use(express.json());
 //Load view engine
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
+
+const logger = (req, res, next) => {
+  console.log("FLOW TEST");
+  return next();
+};
 
 //READ Request Handlers
 app.get("/compliment", async (req, res) => {
@@ -27,7 +33,7 @@ app.get("/", (req, res) => {
   console.log("/ endpoint hit");
 });
 
-app.get("/user", (req, res) => {
+app.get("/user", logger, (req, res) => {
   //Get all users in the database
   fs.readFile("sample-data.json", "utf8", function (err, data) {
     if (err) console.log("Error while reading file", err);
